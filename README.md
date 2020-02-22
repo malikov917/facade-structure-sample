@@ -35,6 +35,7 @@ NGRX VS NGXS. Изображение объясняющее флоу NgRx
 ￼￼![NGRX](https://ngrx.io/generated/images/guide/store/state-management-lifecycle.png)
 
 Флоу, описывающий NGXS
+
 ￼￼![NGXS](https://i0.wp.com/blog.knoldus.com/wp-content/uploads/2019/06/flow-ngxs.png?w=810&ssl=1)
 
 ￼
