@@ -1,0 +1,16 @@
+<div class="mat-dialog renew-template">
+    <div class="mat-dialog-content" >
+        <h2 class="mat-title">Update card</h2>
+        <div class="mat-dialog-content-body">
+            <p>We are not able to charge your card because "{{errorCardReason}}"</p>
+            <p>Please do not forget to renew your card!</p>
+        </div>
+    </div>
+
+    <div class="mat-dialog-actions" layout="row">
+        <span flex></span>
+        <button mat-button type="button" class="submit-button" (click)="close()">
+                {{language.renew_popup_btnOk}}
+        </button>
+    </div>
+</div>

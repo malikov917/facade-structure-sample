@@ -1,0 +1,71 @@
+<ng-container *ngIf="(user$ | async) as user">
+	<div id="profile" class="form-wrapper information-page pt-60" flex="80" flex-gt-md="60" *ngIf="hasBillingAddress()  && user.Payment.PaymentMethod === PaymentMethod.StripeSubscription && user.Payment.Number && (paymentProcess$ | async) as paymentProcess">
+		<div class="payments">
+
+			<mat-chip-list>
+				<mat-chip color="warn" *ngIf="user.ErrorCardReason" (click)="showCardError()">{{ 'Card Error!' }}</mat-chip>
+			</mat-chip-list>
+			
+			<div layout="column" layout-gt-sm="row">
+				<div class="flex-100">
+					<div class="form-title">
+						{{language.title_PaymentDetails}}
+					</div>
+				</div>
+				<div class="flex-100">
+					<div class="form-title inx-icon icon-pencil after s20" [hidden]="paymentProcess.editMode" (click)="edit()">
+						{{language.edit_label_with_pencil}}
+					</div>
+				</div>
+			</div>
+			
+			<app-stripe-payments [hidden]="!paymentProcess.editMode && user.Payment.PaymentMethod === 1" (stripeData)="stripeData = $event" (stripeCardValid)="stripeCardValid = $event"></app-stripe-payments>
+			
+			<div class="profile-box info-box general mat-whiteframe-1dp" layout="column" *ngIf="!paymentProcess.editMode">
+				<div class="content">
+					<div class="info-line">
+						<div class="title" translate="PROFILE.GENDER">{{language.labelCardHolder}}</div>
+						<div class="info pl-5">{{user.Payment.FirstName}} {{user.Payment.LastName}}</div>
+					</div>
+
+					<div class="info-line">
+						<div class="title" translate="PROFILE.BIRTHDAY">{{language.labelCardNumber}}</div>
+						<div class="info pl-5">************{{user.Payment.Number}}</div>
+						<i class="sprite {{getCardType()}}"></i>
+					</div>
+
+					<div class="info-line">
+						<div class="title" translate="PROFILE.LOCATIONS">{{language.labelExpiryDate}}</div>
+						<div class="info location">
+							<span class="pl-5">{{user.Payment.Month}}/{{user.Payment.Year}}</span>
+						</div>
+					</div>
+					<div layout="row" *ngIf="user.Customer.CardError === (enumService$ | async).creditCardError.PaymentActionRequired">
+						<button mat-raised-button color="primary" class="mat-raised mat-accent"
+								(click)="verifyCard(stripeData.stripe, user.Customer.StripeCustomerId)"
+								[ngClass]="{active: isUpdating$ | async}"
+								[ladda]="isUpdating$ | async">
+							Verify your card
+						</button>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="paymentProcess.editMode">
+				<div layout="row">
+					<button mat-raised-button color="primary" type="button" class="mat-raised mat-accent" (click)="paymentProcess.editMode = stripeCardValid = false;">
+						{{language.btn_cancel}}
+					</button>
+
+					<button mat-raised-button color="primary" type="submit" class="mat-raised mat-accent"
+							(click)="updateStripeCard(stripeData.card, stripeData.stripe, user.Customer.StripeCustomerId)"
+							[ngClass]="{active: isUpdating$ | async}"
+							[ladda]="isUpdating$ | async"
+							[disabled]="!stripeCardValid || (isUpdating$ | async)">
+						{{language.btn_done}}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</ng-container>
