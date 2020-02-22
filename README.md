@@ -4,6 +4,8 @@
 Знание observable, subject, service facade api state, asynchronous code, state approach, unidirectional data flow, facade pattern, dumb components, file structure
 
 Почему reactive state management?
+## Check out Slides:
+### https://slides.com/kostyamalikov/raw-reactive-architecture#/
 
 Ссылки:
 https://angular-academy.com/angular-architecture-best-practices/ // !!! Самая главная ссылка
